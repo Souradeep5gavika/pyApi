@@ -1,0 +1,38 @@
+version: '3.8'
+
+x-default-env: &app_default_env
+  APP_ENV: development
+  TAG: "${TAG:-latest}"
+
+services:
+  pcp:
+    image: "pcp:${TAG:-latest}"
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    build:
+      context: .
+      args:
+        TAG: "{TAG-latest}"
+    environment:
+      FLASK_ENV: development
+      FLASK_APP: pcp
+      PCP_UWSGI_PORT: 6661
+      cognito_url: "https://truenorth-test.auth.us-east-1.amazoncognito.com"
+      client_id: "71mo64oeklid4b78de1e4sjvau"
+      password: "Random@123"
+      aws_region: "us-east-1"
+      DEBUG: "True"
+      hmac_shared_key: "testing1234"
+    command: "bash /usr/local/bin/pcp-container-exec-development.sh"
+    ports:
+      - "6661:6661"
+    networks:
+      - default
+      - pcp
+    volumes:
+      - type: bind
+        source: .
+        target: /pcp-app/
+networks:
+  pcp:

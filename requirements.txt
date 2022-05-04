@@ -1,0 +1,10 @@
+flask
+requests
+uwsgi
+boto3
+rsa
+cryptography
+pycryptodomex
+pycryptodome
+oscrypto
+crypto
